@@ -61,7 +61,7 @@ These are persistent system decisions that must not change unless explicitly req
 - Avoid premature optimization
 - Use descriptive names over short clever names
 - Add comments only for non-obvious reasoning
-- Prefer explicit types over inferred complex types
+- Prefer explicit over implicit — types, dependencies, side effects, and control flow should all be visible, not hidden
 - Keep files under ~300 lines where practical
 
 ## Security Rules
@@ -91,42 +91,57 @@ Business logic that must remain stable:
 - If tests fail, fix root cause instead of snapshot updates
 
 ## Common Commands
+
+Fill in the actual commands for this project. Every category below should be defined.
+
 ### Development
-- Install: `pnpm install`
-- Start: `pnpm dev`
-- Build: `pnpm build`
+- Install dependencies: `<install command>`
+- Start dev server / run locally: `<dev/run command>`
+- Build for production: `<build command>`
 
 ### Quality
-- Lint: `pnpm lint`
-- Typecheck: `pnpm typecheck`
-- Test: `pnpm test`
-- Single test: `pnpm test -- <file>`
+- Lint: `<lint command>`
+- Type / static analysis check: `<typecheck command>` (if the language supports it)
+- Run all tests: `<test command>`
+- Run a single test file: `<single test command>`
 
-### Database
-- Generate: `pnpm prisma generate`
-- Migrate: `pnpm prisma migrate dev`
-- Seed: `pnpm db:seed`
+### Database (if applicable)
+- Generate ORM / query client: `<generate command>`
+- Apply migrations: `<migrate command>`
+- Seed development data: `<seed command>`
 
 ## Workflow Expectations
-- Before coding:
-  1. Read related files first
-  2. Understand existing patterns
-  3. Reuse conventions already in repo
+
+### Step 0 — Classify every request (mandatory)
+Before any action, classify the incoming request using `rules/request-classification.md`.
+Output the classification block, then follow the corresponding workflow:
+
+| Category | Workflow skill |
+|---|---|
+| REVIEW | `skills/general/review-workflow/SKILL.md` |
+| NEW DEVELOPMENT | `skills/general/development-workflow/SKILL.md` |
+| FIX / UPDATE / REFACTOR | `skills/general/fix-workflow/SKILL.md` |
+
+### Before coding (NEW DEVELOPMENT and FIX only):
+  1. Create the required PRD / fix brief from the appropriate template in `docs/prd/templates/`
+  2. Read related files to understand existing patterns
+  3. Reuse conventions already in the repo
   4. Check architecture decisions before structural changes
-- After coding:
+
+### After coding:
   1. Run lint
   2. Run typecheck
   3. Run affected tests
-  4. Update changelog immediately
-  5. Update ADRs if architecture changed
-  6. Summarize changed files + risks
+  4. Update changelog immediately (`docs/changelog/changelog.md`)
+  5. Update decision log if any architectural choice was made (`docs/decisions/decisions.md`)
+  6. Update the PRD / fix brief status to Resolved / Implemented
 
 ## Documentation Enforcement
 These updates are mandatory and must happen immediately after changes.
 
 ### Changelog
 - Every code change must append an entry to:
-  - `.claude/changelog/changelog.md`
+  - `docs/changelog/changelog.md`
 - Include:
   - changed files
   - behavior changes
@@ -135,7 +150,7 @@ These updates are mandatory and must happen immediately after changes.
 
 ### Decision Log
 - Every architecture, data-flow, security, or infra decision must append:
-  - `.claude/changelog/decisions.md`
+  - `docs/decisions/decisions.md`
 - Do not batch decision updates later
 - Record the decision immediately after implementation
 
@@ -160,8 +175,12 @@ These updates are mandatory and must happen immediately after changes.
 - Main entry: `<path>`
 - Core service: `<path>`
 - Shared utils: `<path>`
-- ADRs: `.claude/changelog/decisions.md`
-- Changelog: `.claude/changelog/changelog.md`
+- PRD (project): `docs/prd/PROJECT-NAME-v1.0.0.md`
+- PRD (features): `docs/prd/features/FEAT-NNN-*.md`
+- Fix briefs: `docs/prd/fixes/FIX-NNN-*.md`
+- PRD templates: `docs/prd/templates/`
+- Changelog: `docs/changelog/changelog.md`
+- Decision log: `docs/decisions/decisions.md`
 
 ### Known Pitfalls
 - `<legacy module has side effects>`

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(/.claude/skills/frontend/**)",
+      "Edit(/.claude/skills/infra/**)",
+      "Bash(mkdir -p \".claude/examples/framework-profiles/nextjs\" \".claude/examples/framework-profiles/express\" \".claude/examples/framework-profiles/postgres\" \".claude/examples/framework-profiles/vue\" \".claude/examples/framework-profiles/terraform\")",
+      "Bash(git mv *)",
+      "Bash(git rm *)",
+      "Bash(git add *)",
+      "Edit(/.claude/skills/general/**)"
+    ]
+  }
+}
