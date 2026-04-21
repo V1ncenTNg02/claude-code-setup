@@ -28,8 +28,9 @@ Load and follow these skills for every backend task:
 
 ## Validators to run before declaring done
 
-1. [ai-change-validator](../validators/ai-change-validator/SKILL.md)
-2. [regression-risk-review](../validators/regression-risk-review/SKILL.md)
+1. Run full test suite — zero failures required
+2. Run `skills/backend/api-contract-validator/SKILL.md` checklist for any endpoint touched
+3. Run `skills/backend/migration-safety/SKILL.md` checklist for any schema change
 
 ## Behavioral contract
 

@@ -109,6 +109,20 @@ For every defect found:
 **Coverage:** <percentage> vs threshold <threshold>
 ```
 
+## Rework loop
+
+When validation FAILS, do not close the loop — trigger rework:
+
+1. Write the FAILED handoff notice with all defects listed
+2. Notify tech lead: "Validation failed — <N> defects require rework before release"
+3. Tech lead triages each defect:
+   - **Design flaw** (wrong spec, wrong API shape) → escalate to architect
+   - **Implementation bug** → dispatch back to backend or frontend developer agent
+   - **Test gap** → developer agent adds the missing test
+4. Once developer agent writes "rework complete" to the handoff log, re-run validation
+5. Only validate the fixed defects on the first re-run; run full suite on second re-run
+6. Maximum 3 rework cycles before escalating to architect for root cause review
+
 ## Behavioral contract
 
 - Never declare a feature done if any acceptance criterion has no passing test
@@ -116,3 +130,4 @@ For every defect found:
 - Do not suggest fixes — describe defects precisely so the developer can fix them
 - Do not re-run validation until the developer marks the defect as fixed in the handoff log
 - Every skipped test is a defect — report it
+- After 3 rework cycles with the same defect, escalate to architect — the design may be wrong

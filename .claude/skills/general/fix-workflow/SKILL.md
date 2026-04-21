@@ -5,7 +5,13 @@
 ## When to invoke
 
 Invoked after the intake agent classifies a request as **FIX / UPDATE / REFACTOR**.
-Applies to all sub-types: Bug Fix, Update, Refactor, Performance, Security Patch, Dependency Upgrade.
+Applies to all sub-types: Bug Fix, Update, Refactor, Performance, Security Patch, Dependency Upgrade, **Hotfix**.
+
+> **Hotfix?** If this is a production incident requiring immediate resolution, invoke
+> `agents/incident-response-agent.md` first. The incident agent classifies severity,
+> coordinates rollback, and then dispatches this workflow for the actual code fix.
+> Hotfixes skip the fix brief challenger round and go straight to implementation after
+> root cause is confirmed. They are fast-tracked but not skipped — tests are still mandatory.
 
 ---
 
@@ -18,6 +24,7 @@ Applies to all sub-types: Bug Fix, Update, Refactor, Performance, Security Patch
 | Refactor | No — if purely internal with no behaviour change |
 | Performance | No — if no API or behaviour change; yes if it changes interfaces |
 | Security Patch | Yes — always (for audit trail) |
+| Hotfix | Yes — but challenger round is skipped; proceed immediately after root cause confirmed |
 | Dependency Upgrade | No — unless it introduces breaking changes |
 
 Fix briefs live at `docs/prd/fixes/FIX-NNN-short-description.md`.
