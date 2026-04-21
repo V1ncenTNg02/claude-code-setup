@@ -432,6 +432,36 @@
     </div>
   </div>
 
+  <!-- CLASSIFICATION FORK -->
+  <div style="width:100%;max-width:940px;margin-top:4px;">
+    <div class="section-title" style="margin-bottom:10px;">Intake Agent routes every request to one of three paths</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+
+      <!-- REVIEW -->
+      <div style="padding:14px;background:rgba(6,182,212,0.07);border:1px solid rgba(6,182,212,0.2);border-radius:10px;text-align:center;">
+        <div style="font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:#67e8f9;margin-bottom:6px;font-weight:600;">📖 REVIEW</div>
+        <div style="font-size:0.72rem;color:#94a3b8;margin-bottom:8px;">Questions · Analysis · Audit</div>
+        <div style="font-size:0.7rem;color:#475569;">→ review-workflow<br><span style="color:#374151;font-size:0.65rem;">No code changes. Read-only.</span></div>
+      </div>
+
+      <!-- NEW DEVELOPMENT (highlighted, main path) -->
+      <div style="padding:14px;background:rgba(34,211,238,0.08);border:2px solid rgba(34,211,238,0.35);border-radius:10px;text-align:center;position:relative;">
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#0b0f1a;padding:0 8px;font-size:0.58rem;color:#22d3ee;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;">main path ↓</div>
+        <div style="font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:#22d3ee;margin-bottom:6px;font-weight:600;">🏗 NEW DEVELOPMENT</div>
+        <div style="font-size:0.72rem;color:#94a3b8;margin-bottom:8px;">Build · Create · Implement</div>
+        <div style="font-size:0.7rem;color:#475569;">→ Full SDLC workflow<br><span style="color:#374151;font-size:0.65rem;">PM → Architect → Dev → QA → Deploy</span></div>
+      </div>
+
+      <!-- FIX / UPDATE / REFACTOR -->
+      <div style="padding:14px;background:rgba(249,115,22,0.07);border:1px solid rgba(249,115,22,0.2);border-radius:10px;text-align:center;">
+        <div style="font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:#fdba74;margin-bottom:6px;font-weight:600;">🔧 FIX / UPDATE / REFACTOR</div>
+        <div style="font-size:0.72rem;color:#94a3b8;margin-bottom:8px;">Bug fix · Update · Refactor · Security</div>
+        <div style="font-size:0.7rem;color:#475569;">→ fix-workflow<br><span style="color:#374151;font-size:0.65rem;">Root cause first. TDD. No scope creep.</span></div>
+      </div>
+
+    </div>
+  </div>
+
   <div class="arrow"><div class="arrow-label">NEW DEVELOPMENT</div><div class="arrow-line"></div><div class="arrow-head"></div></div>
 
   <!-- PHASE 1: PM + BUSINESS OWNER -->
@@ -810,6 +840,35 @@
 
 <!-- ═══════════════════════════════════════════════════════ BOTTOM PANELS -->
 <div class="panels">
+
+  <!-- Setup required -->
+  <div class="panel">
+    <h3 style="color:#fbbf24;">🛠 Setup Required — Fill In Before Using</h3>
+    <div class="file-item">
+      <div class="file-path">CLAUDE.md &nbsp;<span style="background:rgba(239,68,68,0.2);color:#fca5a5;font-size:0.6rem;padding:1px 5px;border-radius:3px;">REQUIRED</span></div>
+      <div class="file-desc">Project name, tech stack, architecture decisions, common commands. Fill all placeholders before the first session.</div>
+    </div>
+    <div class="file-item">
+      <div class="file-path">docs/testing/testing-strategy.md &nbsp;<span style="background:rgba(239,68,68,0.2);color:#fca5a5;font-size:0.6rem;padding:1px 5px;border-radius:3px;">REQUIRED</span></div>
+      <div class="file-desc">Choose testing framework and define test commands. Required before first implementation session. Copy from testing-strategy-template.md.</div>
+    </div>
+    <div class="file-item">
+      <div class="file-path">.claude/hooks/stop-run-tests.sh &nbsp;<span style="background:rgba(239,68,68,0.2);color:#fca5a5;font-size:0.6rem;padding:1px 5px;border-radius:3px;">REQUIRED</span></div>
+      <div class="file-desc">Uncomment or set your full test suite command. Runs automatically after every Claude response.</div>
+    </div>
+    <div class="file-item">
+      <div class="file-path">.claude/hooks/post-edit-run-fast-tests.sh &nbsp;<span style="background:rgba(239,68,68,0.2);color:#fca5a5;font-size:0.6rem;padding:1px 5px;border-radius:3px;">REQUIRED</span></div>
+      <div class="file-desc">Uncomment your fast unit test command. Runs automatically after every file edit.</div>
+    </div>
+    <div class="file-item">
+      <div class="file-path">docs/design/ui-design.md &nbsp;<span style="background:rgba(100,116,139,0.2);color:#94a3b8;font-size:0.6rem;padding:1px 5px;border-radius:3px;">FRONTEND</span></div>
+      <div class="file-desc">UI design choices, color tokens, component library decisions. Required before any frontend session. Template at docs/design/ui-design-template.md.</div>
+    </div>
+    <div class="file-item">
+      <div class="file-path">docs/deployment/deployment-config.md &nbsp;<span style="background:rgba(100,116,139,0.15);color:#94a3b8;font-size:0.6rem;padding:1px 5px;border-radius:3px;">OPTIONAL</span></div>
+      <div class="file-desc">Cloud provider, environments, IaC tool, CI/CD choices. Only needed when you are ready to deploy. Copy from deployment-template.md.</div>
+    </div>
+  </div>
 
   <!-- Hooks -->
   <div class="panel">
