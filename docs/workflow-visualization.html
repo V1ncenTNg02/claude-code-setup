@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code — SDLC Agent Workflow</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0b0f1a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 32px 24px 64px;
+  }
+
+  /* ── Header ─────────────────────────────────────────────── */
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  header p { color: #94a3b8; font-size: 0.95rem; }
+
+  /* ── Legend ─────────────────────────────────────────────── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: #94a3b8;
+  }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ── Section titles ─────────────────────────────────────── */
+  .section-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #475569;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  /* ── Flow layout ─────────────────────────────────────────── */
+  .flow {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* ── Agent card ─────────────────────────────────────────── */
+  .agent {
+    border-radius: 12px;
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 1px solid transparent;
+    position: relative;
+    min-width: 200px;
+    text-align: center;
+  }
+  .agent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .agent .role { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; margin-bottom: 4px; }
+  .agent .name { font-size: 1rem; font-weight: 600; }
+  .agent .model { font-size: 0.65rem; opacity: 0.6; margin-top: 4px; }
+
+  /* detail panel (hidden by default) */
+  .agent-detail {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 14px 16px;
+    z-index: 100;
+    text-align: left;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  .agent-detail h4 { font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .agent-detail ul { list-style: none; margin-bottom: 12px; }
+  .agent-detail ul li { font-size: 0.78rem; color: #cbd5e1; padding: 2px 0; }
+  .agent-detail ul li::before { content: "→ "; color: #475569; }
+  .agent.open .agent-detail { display: block; }
+
+  /* ── Colour themes ───────────────────────────────────────── */
+  .c-amber  { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.35); color: #fcd34d; }
+  .c-blue   { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.35); color: #93c5fd; }
+  .c-purple { background: rgba(139,92,246,0.12); border-color: rgba(139,92,246,0.35); color: #c4b5fd; }
+  .c-cyan   { background: rgba(6,182,212,0.12);  border-color: rgba(6,182,212,0.35);  color: #67e8f9; }
+  .c-green  { background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.35); color: #6ee7b7; }
+  .c-red    { background: rgba(239,68,68,0.12);  border-color: rgba(239,68,68,0.35);  color: #fca5a5; }
+  .c-slate  { background: rgba(100,116,139,0.12);border-color: rgba(100,116,139,0.35);color: #cbd5e1; }
+  .c-rose   { background: rgba(244,63,94,0.12);  border-color: rgba(244,63,94,0.4);   color: #fda4af; }
+  .c-orange { background: rgba(249,115,22,0.12); border-color: rgba(249,115,22,0.35); color: #fdba74; }
+
+  /* ── Connectors ─────────────────────────────────────────── */
+  .arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 2px 0;
+  }
+  .arrow-line {
+    width: 2px;
+    height: 28px;
+    background: linear-gradient(to bottom, #334155, #475569);
+  }
+  .arrow-head {
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid #475569;
+  }
+  .arrow-label {
+    font-size: 0.65rem;
+    color: #475569;
+    text-align: center;
+    margin-bottom: 2px;
+  }
+
+  /* ── Row (horizontal agents) ─────────────────────────────── */
+  .row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+  }
+  .row .col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* ── Parallel section ────────────────────────────────────── */
+  .parallel-block {
+    width: 100%;
+    max-width: 680px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding: 20px;
+    background: rgba(6,182,212,0.04);
+    border: 1px dashed rgba(6,182,212,0.2);
+    border-radius: 14px;
+    position: relative;
+  }
+  .parallel-label {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0b0f1a;
+    padding: 0 10px;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #22d3ee;
+  }
+  .parallel-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* ── Challenger side branch ──────────────────────────────── */
+  .branch-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+    max-width: 600px;
+  }
+  .branch-line {
+    height: 2px;
+    width: 48px;
+    background: #334155;
+  }
+  .branch-label {
+    font-size: 0.6rem;
+    color: #475569;
+    padding: 0 8px;
+  }
+
+  /* ── Rework loop ─────────────────────────────────────────── */
+  .rework-box {
+    max-width: 680px;
+    width: 100%;
+    margin-top: 4px;
+    padding: 12px 16px;
+    background: rgba(239,68,68,0.06);
+    border: 1px dashed rgba(239,68,68,0.25);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .rework-box .icon { font-size: 1.1rem; }
+  .rework-box .text { font-size: 0.78rem; color: #94a3b8; line-height: 1.5; }
+  .rework-box .text strong { color: #fca5a5; }
+
+  /* ── Incident section ────────────────────────────────────── */
+  .incident-section {
+    max-width: 1100px;
+    margin: 48px auto 0;
+    padding: 24px;
+    background: rgba(220,38,38,0.06);
+    border: 1px solid rgba(220,38,38,0.2);
+    border-radius: 14px;
+  }
+  .incident-section h3 {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f87171;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .incident-flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    justify-content: center;
+  }
+  .inc-step {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .inc-arrow {
+    width: 28px;
+    height: 2px;
+    background: #4b5563;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .inc-arrow::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: -4px;
+    border-left: 6px solid #4b5563;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+
+  /* ── Bottom panels ───────────────────────────────────────── */
+  .panels {
+    max-width: 1100px;
+    margin: 48px auto 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .panel {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .panel h3 {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #1f2937;
+  }
+  .hook-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .hook-event {
+    font-size: 0.67rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .hook-desc { font-size: 0.78rem; color: #94a3b8; line-height: 1.4; }
+  .hook-desc code { background: #1f2937; padding: 1px 5px; border-radius: 3px; font-size: 0.72rem; color: #67e8f9; font-family: monospace; }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    margin: 2px;
+  }
+  .file-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1f2937;
+  }
+  .file-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .file-path { font-family: monospace; font-size: 0.72rem; color: #67e8f9; margin-bottom: 3px; }
+  .file-desc { font-size: 0.75rem; color: #94a3b8; line-height: 1.4; }
+  .rule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #1f2937;
+    gap: 8px;
+  }
+  .rule-item:last-child { border-bottom: none; }
+  .rule-name { font-family: monospace; font-size: 0.72rem; color: #a5b4fc; }
+  .rule-desc { font-size: 0.7rem; color: #64748b; text-align: right; flex-shrink: 0; }
+
+  /* ── Gate badges ─────────────────────────────────────────── */
+  .gate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 20px;
+    font-size: 0.7rem;
+    color: #6ee7b7;
+    margin: 2px 0 2px;
+  }
+  .gate::before { content: "🔒"; font-size: 0.7rem; }
+
+  /* ── Tooltip fix for overflow ─────────────────────────────── */
+  @media (max-width: 700px) {
+    .agent-detail { width: 260px; }
+    .parallel-block { grid-template-columns: 1fr; }
+    .inc-arrow { display: none; }
+    .incident-flow { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Claude Code — SDLC Agent Workflow</h1>
+  <p>Click any agent card to see its skills, rules, and handoff behaviour</p>
+</header>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Routing</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>Business / Product</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>Architecture</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#06b6d4"></div>Tech Lead</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>Implementation</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Validation</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#6b7280"></div>Infrastructure</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>Incident</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ MAIN FLOW -->
+<div class="flow">
+
+  <!-- USER -->
+  <div style="padding:10px 24px;background:rgba(255,255,255,0.05);border:1px solid #1f2937;border-radius:20px;font-size:0.85rem;color:#94a3b8;">
+    👤 User request
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- INTAKE -->
+  <div class="agent c-amber" onclick="toggle(this)">
+    <div class="role">Phase 0 — Routing</div>
+    <div class="name">Intake Agent</div>
+    <div class="model">Sonnet</div>
+    <div class="agent-detail">
+      <h4>Responsibility</h4>
+      <ul>
+        <li>Classify every request: REVIEW / NEW DEVELOPMENT / FIX</li>
+        <li>Output classification block before any action</li>
+        <li>Route to correct workflow skill</li>
+        <li>Split multi-category requests into separate tasks</li>
+      </ul>
+      <h4>Rules applied</h4>
+      <ul><li>request-classification.md</li><li>project-memory.md</li></ul>
+      <h4>Hands off to</h4>
+      <ul>
+        <li>REVIEW → review-workflow</li>
+        <li>NEW DEV → Product Manager</li>
+        <li>FIX → fix-workflow</li>
+        <li>INCIDENT → Incident Response Agent</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-label">NEW DEVELOPMENT</div><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- PHASE 1: PM + BUSINESS OWNER -->
+  <div class="section-title">Phase 1 — Requirements</div>
+  <div class="row">
+    <div class="col">
+      <div class="agent c-blue" onclick="toggle(this)">
+        <div class="role">Phase 1A</div>
+        <div class="name">Product Manager</div>
+        <div class="model">Sonnet</div>
+        <div class="agent-detail">
+          <h4>Responsibility</h4>
+          <ul>
+            <li>Create and own the PRD</li>
+            <li>Write GIVEN/WHEN/THEN acceptance criteria</li>
+            <li>Define what is OUT of scope explicitly</li>
+            <li>Invoke Decision Challenger on the PRD</li>
+          </ul>
+          <h4>Skills</h4>
+          <ul>
+            <li>development-workflow (Phase 1)</li>
+            <li>review-workflow</li>
+            <li>fix-workflow</li>
+          </ul>
+          <h4>Rules</h4>
+          <ul><li>karpathy-guidelines</li><li>project-memory</li></ul>
+          <h4>Hands off to</h4>
+          <ul><li>Business Owner → then Architect</li></ul>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:0;padding-top:20px;">
+      <div style="width:32px;height:2px;background:#334155;"></div>
+      <div style="font-size:0.65rem;color:#475569;padding:0 6px;">approves</div>
+      <div style="width:32px;height:2px;background:#334155;"></div>
+    </div>
+    <div class="col">
+      <div class="agent c-blue" onclick="toggle(this)">
+        <div class="role">Phase 1B — Gate</div>
+        <div class="name">Business Owner</div>
+        <div class="model">Sonnet</div>
+        <div class="agent-detail">
+          <h4>Responsibility</h4>
+          <ul>
+            <li>Review PRD for business value & feasibility</li>
+            <li>Approval gates: PRD, data model, arch, API</li>
+            <li>Block on compliance / budget issues</li>
+            <li>Define success metrics (OKRs)</li>
+          </ul>
+          <h4>Approval gates owned</h4>
+          <ul>
+            <li>After PRD → approve to start design</li>
+            <li>After data model → approve to start arch</li>
+            <li>After architecture → approve to implement</li>
+            <li>After API design → approve to implement</li>
+          </ul>
+          <h4>Rules</h4>
+          <ul><li>karpathy-guidelines</li><li>project-memory</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+  <div class="gate">PRD approved by Business Owner before design begins</div>
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- PHASE 2: ARCHITECT + CHALLENGER -->
+  <div class="section-title">Phase 2–3 — Design</div>
+  <div class="branch-row">
+    <div class="agent c-purple" onclick="toggle(this)" style="position:relative;z-index:10;">
+      <div class="role">Phase 2–3 — Design</div>
+      <div class="name">Architect</div>
+      <div class="model">Opus (complex reasoning)</div>
+      <div class="agent-detail">
+        <h4>Design order (enforced)</h4>
+        <ul>
+          <li>Data model FIRST (entities, aggregates, storage)</li>
+          <li>Backend architecture (layers, service boundaries)</li>
+          <li>API contracts (projections of domain model)</li>
+          <li>Frontend architecture (if applicable)</li>
+        </ul>
+        <h4>Skills</h4>
+        <ul>
+          <li>data-model-design</li>
+          <li>backend/architecture</li>
+          <li>frontend-architecture</li>
+          <li>clean-architecture-data-flow</li>
+          <li>solid-principles, design-patterns</li>
+          <li>api-contract-validator</li>
+        </ul>
+        <h4>Rules</h4>
+        <ul><li>engineering-principles</li><li>backward-compatibility</li><li>api-design</li></ul>
+        <h4>Hands off to</h4>
+        <ul><li>Tech Lead (after all designs approved)</li></ul>
+      </div>
+    </div>
+    <div class="branch-line"></div>
+    <div class="branch-label">challenges each design</div>
+    <div class="branch-line"></div>
+    <div class="agent c-purple" onclick="toggle(this)" style="opacity:0.8;">
+      <div class="role">All design phases</div>
+      <div class="name">Decision Challenger</div>
+      <div class="model">Haiku (fast probing)</div>
+      <div class="agent-detail">
+        <h4>Probe dimensions</h4>
+        <ul>
+          <li>Missing considerations</li>
+          <li>Untested assumptions</li>
+          <li>Unexplored alternatives</li>
+          <li>Failure modes</li>
+          <li>Affected parties</li>
+        </ul>
+        <h4>Protocol</h4>
+        <ul>
+          <li>One question per turn</li>
+          <li>Max 3 rounds per document</li>
+          <li>Closes with "Challenge Complete"</li>
+        </ul>
+        <h4>Invoked on</h4>
+        <ul><li>PRD → data model → each ADR</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+  <div class="gate">Data model → Architecture → API design: each approved by Business Owner + User</div>
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- PHASE 4: TECH LEAD -->
+  <div class="section-title">Phase 4 — Orchestration</div>
+  <div class="agent c-cyan" onclick="toggle(this)">
+    <div class="role">Phase 4 — Orchestrator</div>
+    <div class="name">Tech Lead</div>
+    <div class="model">Opus (orchestration)</div>
+    <div class="agent-detail">
+      <h4>Responsibility</h4>
+      <ul>
+        <li>Decompose feature into independent workstreams</li>
+        <li>Dispatch Backend + Frontend agents in PARALLEL</li>
+        <li>Monitor agent-handoff.md for completion</li>
+        <li>Resolve integration conflicts between parallel agents</li>
+        <li>Conduct code review after each workstream</li>
+        <li>Escalate design violations to Architect</li>
+      </ul>
+      <h4>Parallel dispatch rule</h4>
+      <ul>
+        <li>API contracts must exist before dispatching</li>
+        <li>Parallel only if agents don't write the same file</li>
+        <li>Database migrations run first (sequential)</li>
+        <li>Integration wiring runs last (sequential)</li>
+      </ul>
+      <h4>Skills</h4>
+      <ul><li>development-workflow (Phase 4)</li><li>api-contract-validator</li><li>fix-workflow</li></ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line" style="height:18px;"></div><div class="arrow-head"></div></div>
+
+  <!-- PHASE 5: PARALLEL IMPLEMENTATION -->
+  <div class="section-title">Phase 5 — Implementation (parallel)</div>
+  <div class="parallel-block">
+    <div class="parallel-label">⚡ Dispatched simultaneously</div>
+    <div class="parallel-col">
+      <div class="agent c-green" onclick="toggle(this)" style="width:100%;">
+        <div class="role">Backend</div>
+        <div class="name">Backend Developer</div>
+        <div class="model">Sonnet</div>
+        <div class="agent-detail" style="left:0;transform:none;width:280px;">
+          <h4>Build order</h4>
+          <ul>
+            <li>Migration first (schema change)</li>
+            <li>Domain entities & aggregates</li>
+            <li>Repository / data layer</li>
+            <li>Application service / use case</li>
+            <li>API route (thin — delegates immediately)</li>
+            <li>Integration tests (full stack)</li>
+          </ul>
+          <h4>Skills</h4>
+          <ul>
+            <li>api-contract-validator</li>
+            <li>migration-safety</li>
+            <li>security-review</li>
+            <li>payment-webhook-safety</li>
+            <li>clean-architecture-data-flow</li>
+          </ul>
+          <h4>Rules</h4>
+          <ul><li>tdd</li><li>database</li><li>security-baseline</li><li>backward-compatibility</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="parallel-col">
+      <div class="agent c-green" onclick="toggle(this)" style="width:100%;">
+        <div class="role">Frontend</div>
+        <div class="name">Frontend Developer</div>
+        <div class="model">Sonnet</div>
+        <div class="agent-detail" style="right:0;left:auto;transform:none;width:280px;">
+          <h4>Build order (enforced)</h4>
+          <ul>
+            <li>Read docs/design/ui-design.md</li>
+            <li>Search existing component library</li>
+            <li>Build missing shared components</li>
+            <li>Write component tests first (TDD)</li>
+            <li>Compose page from components</li>
+            <li>Wire API calls per API design doc</li>
+            <li>Handle: loading / error / data / empty</li>
+          </ul>
+          <h4>Skills</h4>
+          <ul>
+            <li>frontend-architecture</li>
+            <li>component-contract-check</li>
+            <li>state-management</li>
+          </ul>
+          <h4>Rules</h4>
+          <ul><li>tdd</li><li>frontend-ui-design</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Both write to agent-handoff.md -->
+  <div style="font-size:0.68rem;color:#475569;margin-top:8px;text-align:center;">
+    Both agents write completion notices → <code style="background:#1e293b;padding:1px 6px;border-radius:3px;color:#67e8f9;">docs/memory/agent-handoff.md</code>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+  <div class="gate">Integration: tech lead synthesises, resolves conflicts, runs full test suite</div>
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- PHASE 6: QA -->
+  <div class="section-title">Phase 6 — Validation</div>
+  <div class="agent c-red" onclick="toggle(this)">
+    <div class="role">Phase 6 — Quality Gate</div>
+    <div class="name">QA Validator</div>
+    <div class="model">Haiku (fast systematic checks)</div>
+    <div class="agent-detail">
+      <h4>Validation checklist</h4>
+      <ul>
+        <li>Every acceptance criterion has a passing test</li>
+        <li>API responses match design document exactly</li>
+        <li>Data model invariants enforced (state machines)</li>
+        <li>Components: loading / error / empty states present</li>
+        <li>No skipped tests, no .only filters</li>
+        <li>Coverage meets thresholds</li>
+        <li>No regressions in previously passing tests</li>
+      </ul>
+      <h4>On failure — rework loop</h4>
+      <ul>
+        <li>Design flaw → escalate to Architect</li>
+        <li>Implementation bug → back to Developer</li>
+        <li>After 3 cycles → escalate to Architect</li>
+      </ul>
+      <h4>Rules</h4>
+      <ul><li>testing-enforcement</li><li>testing-standards</li></ul>
+    </div>
+  </div>
+
+  <!-- Rework loop -->
+  <div class="rework-box">
+    <div class="icon">🔁</div>
+    <div class="text">
+      <strong>Rework loop:</strong> QA failures → Tech Lead triages → Developer fixes → QA re-validates.<br>
+      Max 3 cycles. After 3 → escalate to Architect (design may be wrong).
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-label">if auth / data / payment touched</div><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- PHASE 7: SECURITY -->
+  <div class="section-title">Phase 7 — Security (conditional)</div>
+  <div class="agent c-red" onclick="toggle(this)" style="opacity:0.9;">
+    <div class="role">Phase 7 — Security Gate</div>
+    <div class="name">Security Reviewer</div>
+    <div class="model">Sonnet</div>
+    <div class="agent-detail">
+      <h4>When invoked (mandatory)</h4>
+      <ul>
+        <li>Auth or session management changes</li>
+        <li>Authorisation / permission gate changes</li>
+        <li>User input handling (forms, uploads, params)</li>
+        <li>Database queries with user-controlled data</li>
+        <li>Payment / financial logic</li>
+        <li>New third-party dependencies</li>
+        <li>Webhook receivers</li>
+      </ul>
+      <h4>OWASP coverage</h4>
+      <ul>
+        <li>Input validation (allowlist, type, length)</li>
+        <li>Output encoding (XSS, SQL injection)</li>
+        <li>Auth (bcrypt, session tokens, rate limiting)</li>
+        <li>Authz (default deny, IDOR prevention)</li>
+        <li>Secrets (never in source, logs, or responses)</li>
+        <li>Dependencies (CVE audit)</li>
+      </ul>
+      <h4>Blocks release on</h4>
+      <ul><li>Critical or High severity findings</li></ul>
+    </div>
+  </div>
+
+  <div class="gate" style="border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.06);color:#fca5a5;">
+    No Critical or High security findings before deploy
+  </div>
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- PHASE 8: SRE -->
+  <div class="section-title">Phase 8 — Deployment</div>
+  <div class="agent c-slate" onclick="toggle(this)">
+    <div class="role">Phase 8 — Deploy</div>
+    <div class="name">SRE / DevOps</div>
+    <div class="model">Sonnet</div>
+    <div class="agent-detail">
+      <h4>Prerequisites (all required)</h4>
+      <ul>
+        <li>QA validation: PASSED in handoff log</li>
+        <li>Security: approved (or not triggered)</li>
+        <li>docs/deployment/deployment-config.md filled in</li>
+      </ul>
+      <h4>Deployment phases</h4>
+      <ul>
+        <li>Phase 1: Architecture confirmed</li>
+        <li>Phase 2: App prepared (env vars, health check, logs)</li>
+        <li>Phase 3: Containerise (Dockerfile, verify, push)</li>
+        <li>Phase 4: Provision infrastructure (IaC plan → confirm → apply)</li>
+        <li>Phase 5: Secrets to chosen store</li>
+        <li>Phase 6: CI/CD pipeline</li>
+        <li>Phase 7: Smoke test + documentation</li>
+      </ul>
+      <h4>Invariants</h4>
+      <ul>
+        <li>Never choose cloud provider — uses deployment-config.md</li>
+        <li>IaC: plan first, wait for confirmation, then apply</li>
+        <li>Health check fails → rollback immediately</li>
+        <li>No secrets in images, source, or pipeline definitions</li>
+      </ul>
+      <h4>Skills</h4>
+      <ul><li>deployment</li><li>iac-safety</li><li>container-deployment-security</li></ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- NOTIFICATION BACK TO PM -->
+  <div class="agent c-blue" style="opacity:0.7;pointer-events:none;">
+    <div class="role">Notification</div>
+    <div class="name">Product Manager</div>
+    <div class="model">Feature shipped ✓</div>
+  </div>
+
+</div>
+<!-- end .flow -->
+
+<!-- ═══════════════════════════════════════════════════════ INCIDENT SECTION -->
+<div class="incident-section">
+  <h3>🚨 Production Incident Path (triggered by "site is down", "SEV-1", etc.)</h3>
+  <div class="incident-flow">
+    <div class="inc-step c-rose">Production<br>Failure</div>
+    <div class="inc-arrow"></div>
+    <div class="inc-step c-rose">Incident Response<br><small style="font-weight:400;opacity:0.8;">Classify SEV-1 to SEV-4</small></div>
+    <div class="inc-arrow"></div>
+    <div class="inc-step" style="background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);color:#fca5a5;border-radius:8px;padding:8px 16px;font-size:0.8rem;font-weight:600;">Rollback First<br><small style="font-weight:400;opacity:0.8;">restore service</small></div>
+    <div class="inc-arrow"></div>
+    <div class="inc-step c-slate">Root Cause<br>Analysis</div>
+    <div class="inc-arrow"></div>
+    <div class="inc-step c-green">Fix via<br>fix-workflow<br><small style="font-weight:400;opacity:0.8;">(hotfix path)</small></div>
+    <div class="inc-arrow"></div>
+    <div class="inc-step c-red">QA + Security<br><small style="font-weight:400;opacity:0.8;">(expedited)</small></div>
+    <div class="inc-arrow"></div>
+    <div class="inc-step c-slate">Re-deploy<br>via SRE</div>
+    <div class="inc-arrow"></div>
+    <div class="inc-step c-blue">Post-incident<br>report → memory</div>
+  </div>
+  <div style="margin-top:16px;font-size:0.75rem;color:#6b7280;text-align:center;">
+    Rollback before investigation. Never deploy a speculative fix to production. Every incident produces a preventive action in project-memory.md.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ BOTTOM PANELS -->
+<div class="panels">
+
+  <!-- Hooks -->
+  <div class="panel">
+    <h3 style="color:#fb923c;">⚡ Automatic Hooks</h3>
+    <div class="hook-item">
+      <span class="hook-event" style="background:rgba(249,115,22,0.15);color:#fb923c;">PreToolUse</span>
+      <div class="hook-desc">
+        <strong style="color:#e2e8f0;">Bash Safety</strong><br>
+        Blocks <code>rm -rf /</code>, force push to main, <code>curl|bash</code>, DROP DATABASE.<br>
+        Warns on <code>git reset --hard</code>, <code>chmod 777</code>.
+      </div>
+    </div>
+    <div class="hook-item">
+      <span class="hook-event" style="background:rgba(249,115,22,0.15);color:#fb923c;">PreToolUse</span>
+      <div class="hook-desc">
+        <strong style="color:#e2e8f0;">Agent / Skill Logger</strong><br>
+        Every Agent and Skill call is logged to <code>docs/memory/agent-calls.log</code> with timestamp.
+      </div>
+    </div>
+    <div class="hook-item">
+      <span class="hook-event" style="background:rgba(16,185,129,0.1);color:#6ee7b7;">PostToolUse</span>
+      <div class="hook-desc">
+        <strong style="color:#e2e8f0;">Fast Test Runner</strong><br>
+        After every file edit → runs fast unit tests only (&lt;10s). Skips docs and config files.
+      </div>
+    </div>
+    <div class="hook-item">
+      <span class="hook-event" style="background:rgba(139,92,246,0.12);color:#c4b5fd;">Stop</span>
+      <div class="hook-desc">
+        <strong style="color:#e2e8f0;">Full Test Suite</strong><br>
+        After every Claude response → runs the full test suite. Configure command in <code>stop-run-tests.sh</code>.
+      </div>
+    </div>
+  </div>
+
+  <!-- Communication files -->
+  <div class="panel">
+    <h3 style="color:#67e8f9;">📡 Inter-agent Communication</h3>
+    <div class="file-item">
+      <div class="file-path">docs/memory/project-memory.md</div>
+      <div class="file-desc">Read at the start of every session by every agent. Stores: special requirements (REQ-NNN), session logs, known gotchas, pending work.</div>
+    </div>
+    <div class="file-item">
+      <div class="file-path">docs/memory/agent-handoff.md</div>
+      <div class="file-desc">Written when an agent finishes a task. Contains: what was built, API shapes, files changed, what the next agent needs to know. Enables parallel agents to stay in sync.</div>
+    </div>
+    <div class="file-item">
+      <div class="file-path">docs/memory/agent-calls.log</div>
+      <div class="file-desc">Auto-generated by hook. Timestamped record of every Agent and Skill invocation — used for audit and debugging.</div>
+    </div>
+    <div class="file-item">
+      <div class="file-path">docs/design/</div>
+      <div class="file-desc">data-model-*.md, architecture-*.md, api-*.md, ui-design.md — the contracts all agents implement against.</div>
+    </div>
+  </div>
+
+  <!-- Rules -->
+  <div class="panel">
+    <h3 style="color:#a5b4fc;">📋 Always-on Rules</h3>
+    <div class="rule-item"><span class="rule-name">karpathy-guidelines</span><span class="rule-desc">Think, simplify, surgical, verify</span></div>
+    <div class="rule-item"><span class="rule-name">request-classification</span><span class="rule-desc">Classify before acting</span></div>
+    <div class="rule-item"><span class="rule-name">project-memory</span><span class="rule-desc">Read/write every session</span></div>
+    <div class="rule-item"><span class="rule-name">tdd</span><span class="rule-desc">Failing test before implementation</span></div>
+    <div class="rule-item"><span class="rule-name">testing-enforcement</span><span class="rule-desc">Full suite before done</span></div>
+    <div class="rule-item"><span class="rule-name">security-baseline</span><span class="rule-desc">OWASP, auth, secrets</span></div>
+    <div class="rule-item"><span class="rule-name">backward-compatibility</span><span class="rule-desc">Never break a contract</span></div>
+    <div class="rule-item"><span class="rule-name">api-design</span><span class="rule-desc">Design file before endpoint code</span></div>
+    <div class="rule-item"><span class="rule-name">database</span><span class="rule-desc">Migration-first, reversible</span></div>
+    <div class="rule-item"><span class="rule-name">git-workflow</span><span class="rule-desc">Branching, commits, PRs</span></div>
+    <div class="rule-item"><span class="rule-name">dependency-management</span><span class="rule-desc">CVE audit, version pinning</span></div>
+    <div class="rule-item"><span class="rule-name">frontend-ui-design</span><span class="rule-desc">UI doc first, components first</span></div>
+    <div class="rule-item"><span class="rule-name">changelog</span><span class="rule-desc">Entry after every change</span></div>
+    <div class="rule-item"><span class="rule-name">engineering-principles</span><span class="rule-desc">SOLID, Clean Architecture</span></div>
+  </div>
+
+  <!-- Skills library -->
+  <div class="panel">
+    <h3 style="color:#6ee7b7;">🧠 Skills Library</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <span class="tag" style="background:rgba(139,92,246,0.15);color:#c4b5fd;">data-model-design</span>
+      <span class="tag" style="background:rgba(139,92,246,0.15);color:#c4b5fd;">clean-architecture</span>
+      <span class="tag" style="background:rgba(139,92,246,0.15);color:#c4b5fd;">solid-principles</span>
+      <span class="tag" style="background:rgba(139,92,246,0.15);color:#c4b5fd;">design-patterns</span>
+      <span class="tag" style="background:rgba(139,92,246,0.15);color:#c4b5fd;">enterprise-patterns</span>
+      <span class="tag" style="background:rgba(16,185,129,0.15);color:#6ee7b7;">development-workflow</span>
+      <span class="tag" style="background:rgba(16,185,129,0.15);color:#6ee7b7;">fix-workflow</span>
+      <span class="tag" style="background:rgba(16,185,129,0.15);color:#6ee7b7;">review-workflow</span>
+      <span class="tag" style="background:rgba(16,185,129,0.15);color:#6ee7b7;">debugging</span>
+      <span class="tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;">backend/architecture</span>
+      <span class="tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;">api-contract-validator</span>
+      <span class="tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;">migration-safety</span>
+      <span class="tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;">security-review</span>
+      <span class="tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;">payment-webhook-safety</span>
+      <span class="tag" style="background:rgba(245,158,11,0.15);color:#fcd34d;">frontend-architecture</span>
+      <span class="tag" style="background:rgba(245,158,11,0.15);color:#fcd34d;">component-contract-check</span>
+      <span class="tag" style="background:rgba(245,158,11,0.15);color:#fcd34d;">state-management</span>
+      <span class="tag" style="background:rgba(100,116,139,0.15);color:#cbd5e1;">deployment</span>
+      <span class="tag" style="background:rgba(100,116,139,0.15);color:#cbd5e1;">iac-safety</span>
+      <span class="tag" style="background:rgba(100,116,139,0.15);color:#cbd5e1;">container-security</span>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align:center;margin-top:48px;font-size:0.72rem;color:#374151;">
+  claude-code-setup · click agent cards to expand details · agent teams require CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+</div>
+
+<script>
+  function toggle(el) {
+    const wasOpen = el.classList.contains('open');
+    // close all
+    document.querySelectorAll('.agent.open').forEach(a => a.classList.remove('open'));
+    // open clicked one if it wasn't open
+    if (!wasOpen) el.classList.add('open');
+  }
+  // close on outside click
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.agent')) {
+      document.querySelectorAll('.agent.open').forEach(a => a.classList.remove('open'));
+    }
+  });
+</script>
+</body>
+</html>
