@@ -9,7 +9,13 @@
       "Bash(git add *)",
       "Edit(/.claude/skills/general/**)",
       "WebFetch(domain:raw.githubusercontent.com)"
+    ],
+    "additionalDirectories": [
+      "e:\\GitProject\\claude-code-setup\\.claude\\skills\\infra"
     ]
+  },
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "hooks": {
     "PreToolUse": [

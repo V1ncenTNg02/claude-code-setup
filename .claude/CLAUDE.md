@@ -137,6 +137,7 @@ Output the classification block, then follow the corresponding workflow:
 | REVIEW | `skills/general/review-workflow/SKILL.md` |
 | NEW DEVELOPMENT | `skills/general/development-workflow/SKILL.md` |
 | FIX / UPDATE / REFACTOR | `skills/general/fix-workflow/SKILL.md` |
+| DEPLOYMENT *(optional — only when user explicitly requests it)* | `skills/infra/deployment/SKILL.md` |
 
 ### Before coding (NEW DEVELOPMENT and FIX only):
   1. Read `docs/testing/testing-strategy.md` — confirm testing philosophy and test commands
@@ -232,6 +233,30 @@ These updates are mandatory and must happen immediately after changes.
 - Testing strategy: `docs/testing/testing-strategy.md`
 - Testing strategy template: `docs/testing/testing-strategy-template.md`
 - Project memory: `docs/memory/project-memory.md`
+- Agent handoff log: `docs/memory/agent-handoff.md`
+- Deployment config *(optional)*: `docs/deployment/deployment-config.md`
+- Deployment template: `docs/deployment/deployment-template.md`
+
+### SDLC Agents
+Each agent owns a specific role. Dispatch the right agent for the right phase.
+Parallel dispatch: when backend and frontend tasks are independent, dispatch both simultaneously.
+
+| Phase | Agent | File |
+|---|---|---|
+| Intake & classification | Intake Agent | `agents/intake-agent.md` |
+| Requirements | Product Manager | `agents/product-manager-agent.md` |
+| Business approval | Business Owner | `agents/business-owner-agent.md` |
+| Design (data model, architecture, API) | Architect | `agents/architect-agent.md` |
+| Design challenge | Decision Challenger | `agents/decision-challenger-agent.md` |
+| Implementation orchestration | Tech Lead | `agents/tech-lead-agent.md` |
+| Backend implementation | Backend Developer | `agents/backend-developer-agent.md` |
+| Frontend implementation | Frontend Developer | `agents/frontend-developer-agent.md` |
+| Quality validation | QA Validator | `agents/qa-validator-agent.md` |
+| Security review | Security Reviewer | `agents/security-reviewer-agent.md` |
+| Deployment & infrastructure | SRE / DevOps | `agents/sre-devops-agent.md` |
+
+**Inter-agent communication:** All agents read and write `docs/memory/agent-handoff.md`.
+Write a completion notice when your task is done so downstream agents know what changed.
 
 ### Known Pitfalls
 - `<legacy module has side effects>`
