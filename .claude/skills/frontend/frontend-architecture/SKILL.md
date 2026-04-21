@@ -14,6 +14,55 @@ Use this skill when:
 
 ---
 
+## Session start — mandatory (applies to every frontend task)
+
+Before writing any component or page code:
+
+1. Read `docs/design/ui-design.md` — full read, not a skim
+2. Check git log for recent changes to `docs/design/ui-design.md`; if changed, audit affected components first
+3. Confirm whether an awesome-design-md `DESIGN.md` profile exists in the project root
+4. If `docs/design/ui-design.md` is still `Draft` or incomplete, ask the user to complete it before writing UI code
+
+Full enforcement details: `rules/frontend-ui-design.md`
+
+---
+
+## Component-first, page-second — the enforced build order
+
+**Never scaffold a page before its components are built.**
+
+```
+Step 1 — Identify UI elements the page needs
+Step 2 — Search the shared component library for each element
+Step 3 — Build missing components in isolation (standalone, no page coupling)
+Step 4 — Compose the page from the completed components
+```
+
+### Component reuse check (run before creating any new component)
+
+| Situation | Action |
+|---|---|
+| Exact match found in component library | Reuse it — do not duplicate |
+| Partial match found | Extend via props or composition |
+| No match found | Build standalone component, then use in page |
+| Similar component exists in another page | Extract it to shared library, then use in both |
+
+Duplicating a component that already exists is a defect, not a shortcut.
+
+### Component isolation requirement
+
+A valid shared component:
+- Accepts all variable data via props
+- Has no direct coupling to a specific page or route
+- Can be rendered and tested in isolation (no page context required)
+- Has no hardcoded strings or values that belong to one page only
+
+A page fragment (acceptable, but not a shared component):
+- Works only in one specific page
+- Lives at `<feature>/components/<FragmentName>`, not in the shared component library
+
+---
+
 ## Component boundaries
 
 Split components along two axes:
@@ -79,6 +128,22 @@ Do not default to client-side rendering for everything — evaluate per route.
 
 ---
 
+## File organisation
+
+```
+src/
+  components/          ← shared component library (reusable across pages)
+    ui/                ← primitive UI elements (Button, Input, Card, Badge)
+    layout/            ← layout components (Header, Sidebar, PageWrapper)
+    <domain>/          ← domain-specific shared components (UserAvatar, OrderBadge)
+  <feature>/
+    components/        ← page-specific fragments (not in shared library)
+    page.<ext>         ← route/page entry point — composes from components above
+    hooks.<ext>        ← data fetching and local logic for this feature
+```
+
+---
+
 ## Performance patterns
 
 - **Lazy load** heavy components and routes — do not bundle everything upfront.
@@ -89,11 +154,26 @@ Do not default to client-side rendering for everything — evaluate per route.
 
 ---
 
+## Design system integration (awesome-design-md)
+
+If a `DESIGN.md` profile exists in the project root:
+- All component styling decisions must reference it
+- When generating component code, include the instruction: "follow the design spec in DESIGN.md"
+- Treat `DESIGN.md` as the pixel-perfect style authority for AI-generated UI
+
+To set up: browse https://github.com/VoltAgent/awesome-design-md, choose a profile (69 available across
+AI tools, developer tools, SaaS, fintech, e-commerce, and more), copy `DESIGN.md` to project root,
+record the choice in `docs/design/ui-design.md`.
+
+---
+
 ## Red flags
 
+- Page file built before the shared components it needs
+- The same visual element implemented in two different page files
 - Business logic (pricing, validation rules) inside a component
 - Data fetched in a parent and prop-drilled through 3+ levels
 - A single component file over 300 lines
 - Global state used as a data cache for everything
 - No loading or error state handled — assuming data is always available
-- Rendering the same data fetch in multiple places without deduplication
+- A component that cannot be rendered without a specific page context

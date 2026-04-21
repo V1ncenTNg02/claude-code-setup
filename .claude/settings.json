@@ -7,7 +7,43 @@
       "Bash(git mv *)",
       "Bash(git rm *)",
       "Bash(git add *)",
-      "Edit(/.claude/skills/general/**)"
+      "Edit(/.claude/skills/general/**)",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Agent|Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/log-agent-skill-call.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/stop-run-tests.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/post-edit-run-fast-tests.sh"
+          }
+        ]
+      }
     ]
   }
 }

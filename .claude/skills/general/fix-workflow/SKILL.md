@@ -49,7 +49,13 @@ Use the template at `docs/prd/templates/fix-update-brief.md`.
 - Save to `docs/prd/fixes/FIX-NNN-short-description.md`
 - The brief must be complete before implementation begins
 
-**Gate: For bug fixes and security patches, the root cause must be identified before any code changes.**
+**Step 1.4 — Challenge the fix brief (if brief was created)**
+- Invoke `agents/decision-challenger-agent.md` to review the completed fix brief
+- The challenger probes for: root cause misdiagnosis, incomplete risk assessment, missing rollback steps, and unconsidered failure modes
+- Answer each challenge question before proceeding
+- Maximum three challenge rounds; the challenger closes when satisfied
+
+**Gate: Root cause identified and fix brief challenged before any code changes.**
 
 ---
 
@@ -110,6 +116,7 @@ Use the template at `docs/prd/templates/fix-update-brief.md`.
 
 | Gate | What must be true |
 |---|---|
+| After Step 1.4 | Fix brief challenged and closed (if brief required) |
 | Before implementation | Root cause identified (for bugs); scope bounded (for all) |
 | Before implementation | Failing test written and confirmed failing |
 | After implementation | All tests pass, no regressions |

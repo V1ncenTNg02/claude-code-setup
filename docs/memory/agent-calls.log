@@ -1,0 +1,4 @@
+# Agent & Skill Call Log
+# Format: [YYYY-MM-DD HH:MM:SS] AGENT|SKILL  | detail
+# Written by: .claude/hooks/log-agent-skill-call.sh
+# Read this file to audit which agents and skills have been invoked and when.
