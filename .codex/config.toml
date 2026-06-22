@@ -1,0 +1,20 @@
+# .codex/config.toml — project-scoped Codex configuration
+# Codex reads this when the repo is a trusted project.
+# Global config lives at ~/.codex/config.toml.
+
+# Skills discovery: Codex also checks $CWD/.agents/skills automatically.
+# The .agents/skills/ directory is kept in sync with skills/ via scripts/sync-skills.sh.
+
+# Instruct Codex to load AGENTS.md from the repo root.
+# (Codex checks AGENTS.md by default; this confirms the project doc settings.)
+project_doc_max_bytes = 32768
+
+# MCP servers (add your project's MCP servers here)
+# Example — uncomment and fill in:
+# [mcp_servers.context7]
+# command = "npx"
+# args = ["-y", "@upstash/context7-mcp"]
+
+# [mcp_servers.filesystem]
+# command = "npx"
+# args = ["-y", "@modelcontextprotocol/server-filesystem", "."]
