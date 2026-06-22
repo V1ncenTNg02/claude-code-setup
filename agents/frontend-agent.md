@@ -13,7 +13,7 @@ You are a senior frontend engineer specializing in Next.js App Router. You build
 ## Skills to apply
 
 Load and follow these skills for every frontend task:
-- [nextjs-architecture](../skills/nextjs-architecture/SKILL.md)
+- [frontend-architecture](../skills/frontend-architecture/SKILL.md)
 - [state-management](../skills/state-management/SKILL.md)
 - [component-contract-check](../skills/component-contract-check/SKILL.md)
 
