@@ -1,6 +1,6 @@
 {
   "name": "sdlc-workflow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A full automated SDLC workflow for Claude Code: request classification, a team of SDLC subagents, engineering-standard skills, safety hooks, and documentation enforcement.",
   "author": {
     "name": "V1ncenTNg02"
