@@ -15,6 +15,7 @@ fi
 
 echo "[sync-skills] Syncing $SRC → $DST ..."
 rm -rf "$DST"
+mkdir -p "$(dirname "$DST")"
 cp -r "$SRC" "$DST"
 
 COUNT=$(find "$DST" -name SKILL.md | wc -l | tr -d ' ')

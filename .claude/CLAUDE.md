@@ -134,10 +134,10 @@ Output the classification block, then follow the corresponding workflow:
 
 | Category | Workflow skill |
 |---|---|
-| REVIEW | `skills/general/review-workflow/SKILL.md` |
-| NEW DEVELOPMENT | `skills/general/development-workflow/SKILL.md` |
-| FIX / UPDATE / REFACTOR | `skills/general/fix-workflow/SKILL.md` |
-| DEPLOYMENT *(optional — only when user explicitly requests it)* | `skills/infra/deployment/SKILL.md` |
+| REVIEW | `skills/review-workflow/SKILL.md` |
+| NEW DEVELOPMENT | `skills/development-workflow/SKILL.md` |
+| FIX / UPDATE / REFACTOR | `skills/fix-workflow/SKILL.md` |
+| DEPLOYMENT *(optional — only when user explicitly requests it)* | `skills/deployment/SKILL.md` |
 
 ### Before coding (NEW DEVELOPMENT and FIX only):
   1. Read `docs/testing/testing-strategy.md` — confirm testing philosophy and test commands

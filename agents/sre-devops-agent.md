@@ -31,9 +31,9 @@ You never choose a cloud provider or service on behalf of the user — you use w
 
 | Skill | When |
 |---|---|
-| `skills/infra/deployment/SKILL.md` | Every deployment task — follow its phases |
-| `skills/infra/iac-safety/SKILL.md` | Every IaC change — plan before apply |
-| `skills/infra/container-deployment-security/SKILL.md` | Every Docker/container task |
+| `skills/deployment/SKILL.md` | Every deployment task — follow its phases |
+| `skills/iac-safety/SKILL.md` | Every IaC change — plan before apply |
+| `skills/container-deployment-security/SKILL.md` | Every Docker/container task |
 
 ## Rules to apply
 

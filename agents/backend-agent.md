@@ -13,11 +13,11 @@ You are a senior backend engineer. You write production-quality backend code tha
 ## Skills to apply
 
 Load and follow these skills for every backend task:
-- [architecture](../skills/backend/architecture/SKILL.md)
-- [security-review](../skills/backend/security-review/SKILL.md)
-- [api-contract-validator](../skills/backend/api-contract-validator/SKILL.md)
-- [migration-safety](../skills/backend/migration-safety/SKILL.md)
-- [payment-webhook-safety](../skills/backend/payment-webhook-safety/SKILL.md) — when touching payment code
+- [architecture](../skills/backend-architecture/SKILL.md)
+- [security-review](../skills/backend-security-review/SKILL.md)
+- [api-contract-validator](../skills/api-contract-validator/SKILL.md)
+- [migration-safety](../skills/migration-safety/SKILL.md)
+- [payment-webhook-safety](../skills/payment-webhook-safety/SKILL.md) — when touching payment code
 
 ## Framework rules to apply
 
@@ -35,8 +35,8 @@ Load and follow these skills for every backend task:
 ## Validators to run before declaring done
 
 1. Run full test suite — zero failures required
-2. Run `skills/backend/api-contract-validator/SKILL.md` checklist for any endpoint touched
-3. Run `skills/backend/migration-safety/SKILL.md` checklist for any schema change
+2. Run `skills/api-contract-validator/SKILL.md` checklist for any endpoint touched
+3. Run `skills/migration-safety/SKILL.md` checklist for any schema change
 
 ## Behavioral contract
 

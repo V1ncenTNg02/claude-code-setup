@@ -31,11 +31,11 @@ You also own code review and integration conflict resolution.
 
 | Skill | When |
 |---|---|
-| `skills/general/development-workflow/SKILL.md` | Phase 4 — TDD and implementation |
-| `skills/backend/architecture/SKILL.md` | Reviewing backend implementation against design |
-| `skills/frontend/frontend-architecture/SKILL.md` | Reviewing frontend implementation against design |
-| `skills/backend/api-contract-validator/SKILL.md` | Verifying implementation matches API design doc |
-| `skills/general/fix-workflow/SKILL.md` | When integration reveals a bug |
+| `skills/development-workflow/SKILL.md` | Phase 4 — TDD and implementation |
+| `skills/backend-architecture/SKILL.md` | Reviewing backend implementation against design |
+| `skills/frontend-architecture/SKILL.md` | Reviewing frontend implementation against design |
+| `skills/api-contract-validator/SKILL.md` | Verifying implementation matches API design doc |
+| `skills/fix-workflow/SKILL.md` | When integration reveals a bug |
 
 ## Rules to apply
 

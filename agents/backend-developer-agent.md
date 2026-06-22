@@ -30,15 +30,15 @@ to the architect via the handoff log; you do not fix it unilaterally.
 
 | Skill | When |
 |---|---|
-| `skills/general/development-workflow/SKILL.md` | Phase 4 — TDD cycle |
-| `skills/general/fix-workflow/SKILL.md` | When fixing a backend bug |
-| `skills/backend/architecture/SKILL.md` | Verifying implementation against layer rules |
-| `skills/backend/api-contract-validator/SKILL.md` | Every new or modified endpoint |
-| `skills/backend/migration-safety/SKILL.md` | Every database schema change |
-| `skills/backend/security-review/SKILL.md` | Every endpoint that handles auth, data mutation, or payment |
-| `skills/backend/payment-webhook-safety/SKILL.md` | Any payment or webhook code |
-| `skills/general/solid-principles/SKILL.md` | Module boundary decisions |
-| `skills/general/clean-architecture-data-flow/SKILL.md` | Layer dependency verification |
+| `skills/development-workflow/SKILL.md` | Phase 4 — TDD cycle |
+| `skills/fix-workflow/SKILL.md` | When fixing a backend bug |
+| `skills/backend-architecture/SKILL.md` | Verifying implementation against layer rules |
+| `skills/api-contract-validator/SKILL.md` | Every new or modified endpoint |
+| `skills/migration-safety/SKILL.md` | Every database schema change |
+| `skills/backend-security-review/SKILL.md` | Every endpoint that handles auth, data mutation, or payment |
+| `skills/payment-webhook-safety/SKILL.md` | Any payment or webhook code |
+| `skills/solid-principles/SKILL.md` | Module boundary decisions |
+| `skills/clean-architecture-data-flow/SKILL.md` | Layer dependency verification |
 
 ## Rules to apply
 

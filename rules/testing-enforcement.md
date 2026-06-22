@@ -98,7 +98,7 @@ Before reporting a task complete:
 2. Do not amend the assertion to match the wrong output
 3. Identify whether it is a test bug (wrong assertion) or an implementation bug (wrong behaviour)
 4. Fix the root cause — never the symptom
-5. Apply `skills/general/fix-workflow/SKILL.md` if the failure reveals a real bug
+5. Apply `skills/fix-workflow/SKILL.md` if the failure reveals a real bug
 
 ---
 

@@ -29,14 +29,14 @@ they do not redesign it mid-implementation.
 
 | Skill | When |
 |---|---|
-| `skills/general/data-model-design/SKILL.md` | **Always — first design artifact** |
-| `skills/backend/architecture/SKILL.md` | Backend service and layer design |
-| `skills/frontend/frontend-architecture/SKILL.md` | Frontend architecture when applicable |
-| `skills/general/clean-architecture-data-flow/SKILL.md` | Layer dependency validation |
-| `skills/general/solid-principles/SKILL.md` | Module boundary decisions |
-| `skills/general/design-patterns/SKILL.md` | Pattern selection per use case |
-| `skills/general/enterprise-application-patterns/SKILL.md` | Complex domain design |
-| `skills/backend/api-contract-validator/SKILL.md` | API contract review |
+| `skills/data-model-design/SKILL.md` | **Always — first design artifact** |
+| `skills/backend-architecture/SKILL.md` | Backend service and layer design |
+| `skills/frontend-architecture/SKILL.md` | Frontend architecture when applicable |
+| `skills/clean-architecture-data-flow/SKILL.md` | Layer dependency validation |
+| `skills/solid-principles/SKILL.md` | Module boundary decisions |
+| `skills/design-patterns/SKILL.md` | Pattern selection per use case |
+| `skills/enterprise-application-patterns/SKILL.md` | Complex domain design |
+| `skills/api-contract-validator/SKILL.md` | API contract review |
 
 ## Rules to apply
 
@@ -49,7 +49,7 @@ they do not redesign it mid-implementation.
 ### Phase 2 — Data model (always first)
 
 1. Read PRD acceptance criteria — extract nouns (entities) and verbs (commands/events)
-2. Apply `skills/general/data-model-design/SKILL.md` steps 1–5
+2. Apply `skills/data-model-design/SKILL.md` steps 1–5
 3. Produce `docs/design/data-model-<name>.md`
 4. Invoke `agents/decision-challenger-agent.md` on the data model
 5. Present to user for approval — **do not proceed until approved**

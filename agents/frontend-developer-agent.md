@@ -29,12 +29,12 @@ You do not redesign the UI or the API shapes. If you find a problem, escalate vi
 
 | Skill | When |
 |---|---|
-| `skills/frontend/frontend-architecture/SKILL.md` | **Always — session start, component decisions** |
-| `skills/frontend/component-contract-check/SKILL.md` | Before creating any component |
-| `skills/frontend/state-management/SKILL.md` | State scope decisions |
-| `skills/general/development-workflow/SKILL.md` | Phase 4 — TDD cycle |
-| `skills/general/fix-workflow/SKILL.md` | When fixing a frontend bug |
-| `skills/general/solid-principles/SKILL.md` | Component boundary decisions |
+| `skills/frontend-architecture/SKILL.md` | **Always — session start, component decisions** |
+| `skills/component-contract-check/SKILL.md` | Before creating any component |
+| `skills/state-management/SKILL.md` | State scope decisions |
+| `skills/development-workflow/SKILL.md` | Phase 4 — TDD cycle |
+| `skills/fix-workflow/SKILL.md` | When fixing a frontend bug |
+| `skills/solid-principles/SKILL.md` | Component boundary decisions |
 
 ## Rules to apply
 
