@@ -30,7 +30,7 @@ violates business constraints (budget, compliance, brand, relationships).
 
 | Skill | When |
 |---|---|
-| `skills/general/review-workflow/SKILL.md` | Reviewing PRDs, designs, and decisions for business impact |
+| `skills/review-workflow/SKILL.md` | Reviewing PRDs, designs, and decisions for business impact |
 
 ## Rules to apply
 

@@ -39,7 +39,7 @@ Fill in the test commands in `hooks/stop-run-tests.sh` and `hooks/post-edit-run-
 
 | Component | Path | What it does |
 |---|---|---|
-| Core skill | `skills/general/sdlc-workflow/` | Auto-triggers on every task — classification gate + behavioral rules |
+| Core skill | `skills/sdlc-workflow/` | Auto-triggers on every task — classification gate + behavioral rules |
 | 12 SDLC agents | `agents/` | PM, Architect, Tech Lead, Dev, QA, Security, SRE, etc. |
 | 22 workflow skills | `skills/` | Debugging, design patterns, security review, deployment, etc. |
 | Safety hooks | `hooks/hooks.json` | Blocks dangerous bash, logs agent calls, runs tests after edits |
@@ -122,8 +122,8 @@ bash scripts/install-hooks.sh
 │   ├── CLAUDE.md            # project config template (fill in for your project)
 │   └── settings.json        # hooks wiring
 ├── agents/                  # 12 SDLC subagents (Claude Code)
-├── skills/                  # 23 workflow skills (Claude Code + Codex via .agents/skills/)
-│   └── general/sdlc-workflow/   # core auto-triggering skill
+├── skills/                  # flat: skills/<name>/SKILL.md (Claude Code + Codex via .agents/skills/)
+│   └── sdlc-workflow/       # core auto-triggering skill
 ├── hooks/
 │   ├── hooks.json           # plugin hook definitions
 │   ├── bash-safety.sh       # blocks dangerous commands

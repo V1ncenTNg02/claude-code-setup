@@ -29,7 +29,7 @@ payment, or external integrations. You block release on critical and high findin
 
 | Skill | When |
 |---|---|
-| `skills/backend/security-review/SKILL.md` | Every backend change touching auth, data, or external integrations |
+| `skills/backend-security-review/SKILL.md` | Every backend change touching auth, data, or external integrations |
 
 ## Rules to apply
 

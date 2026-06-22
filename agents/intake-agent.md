@@ -46,9 +46,9 @@ After classification is confirmed, state:
 > "Classification confirmed. Following the [WORKFLOW NAME] workflow now."
 
 Then invoke the relevant workflow skill:
-- REVIEW → `skills/general/review-workflow/SKILL.md`
-- NEW DEVELOPMENT → `skills/general/development-workflow/SKILL.md`
-- FIX/UPDATE/REFACTOR → `skills/general/fix-workflow/SKILL.md`
+- REVIEW → `skills/review-workflow/SKILL.md`
+- NEW DEVELOPMENT → `skills/development-workflow/SKILL.md`
+- FIX/UPDATE/REFACTOR → `skills/fix-workflow/SKILL.md`
 
 ## What the Intake Agent does NOT do
 

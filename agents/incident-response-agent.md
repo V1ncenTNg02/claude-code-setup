@@ -30,8 +30,8 @@ then diagnose from safety.
 
 | Skill | When |
 |---|---|
-| `skills/general/fix-workflow/SKILL.md` | After RCA — guides the fix implementation |
-| `skills/infra/deployment/SKILL.md` | Rollback and re-deploy steps |
+| `skills/fix-workflow/SKILL.md` | After RCA — guides the fix implementation |
+| `skills/deployment/SKILL.md` | Rollback and re-deploy steps |
 
 ## Rules to apply
 
@@ -93,7 +93,7 @@ Affected systems: <list>
 **Step 2.2 — Identify root cause**
 - State the root cause explicitly: "The failure was caused by X at file:line"
 - Distinguish root cause from contributing factors and symptoms
-- Apply `skills/general/fix-workflow/SKILL.md` Step 1.2 (root cause analysis)
+- Apply `skills/fix-workflow/SKILL.md` Step 1.2 (root cause analysis)
 
 **Step 2.3 — Identify contributing factors**
 - What made the root cause possible? (missing test, missing validation, wrong assumption)

@@ -1,7 +1,7 @@
 # AGENTS.md — SDLC Workflow for Codex
 
 This file carries the behavioral contract for Codex. It is the condensed equivalent of the
-Claude Code plugin's `skills/general/sdlc-workflow/SKILL.md`. All rules apply to every task.
+Claude Code plugin's `skills/sdlc-workflow/SKILL.md`. All rules apply to every task.
 
 Skills in `.agents/skills/` are the primary source of detail — this file is the index.
 
@@ -13,9 +13,9 @@ Before any action, classify and state the category:
 
 | Category | Signal | Skill |
 |---|---|---|
-| **REVIEW** | Question / explain / audit / read-only | `.agents/skills/general/review-workflow/SKILL.md` |
-| **NEW DEVELOPMENT** | Building something that doesn't exist | `.agents/skills/general/development-workflow/SKILL.md` |
-| **FIX / UPDATE / REFACTOR** | Changing existing code | `.agents/skills/general/fix-workflow/SKILL.md` |
+| **REVIEW** | Question / explain / audit / read-only | `.agents/skills/review-workflow/SKILL.md` |
+| **NEW DEVELOPMENT** | Building something that doesn't exist | `.agents/skills/development-workflow/SKILL.md` |
+| **FIX / UPDATE / REFACTOR** | Changing existing code | `.agents/skills/fix-workflow/SKILL.md` |
 
 Output before acting:
 ```
@@ -96,29 +96,29 @@ requirements. Read the last 3 session log entries for context.
 
 | Skill | Path | When |
 |---|---|---|
-| SDLC workflow (this index in skill form) | `.agents/skills/general/sdlc-workflow/` | Auto |
-| Review workflow | `.agents/skills/general/review-workflow/` | REVIEW requests |
-| Development workflow | `.agents/skills/general/development-workflow/` | NEW DEVELOPMENT |
-| Fix / refactor workflow | `.agents/skills/general/fix-workflow/` | FIX/UPDATE/REFACTOR |
-| Debugging | `.agents/skills/general/debugging/` | Investigating bugs |
-| Data model design | `.agents/skills/general/data-model-design/` | After PRD approval |
-| Design patterns | `.agents/skills/general/design-patterns/` | Recurring design problems |
-| SOLID principles | `.agents/skills/general/solid-principles/` | Class/module design |
-| Clean architecture data flow | `.agents/skills/general/clean-architecture-data-flow/` | Cross-layer data |
-| Enterprise patterns | `.agents/skills/general/enterprise-application-patterns/` | Persistence/domain |
-| Software dev principles | `.agents/skills/general/software-development-principles/` | Design tradeoffs |
-| Backend architecture | `.agents/skills/backend/architecture/` | Backend structuring |
-| API contract validator | `.agents/skills/backend/api-contract-validator/` | Adding/changing endpoints |
-| Migration safety | `.agents/skills/backend/migration-safety/` | Schema migrations |
-| Backend security review | `.agents/skills/backend/security-review/` | Auth/payment/data changes |
-| Payment webhook safety | `.agents/skills/backend/payment-webhook-safety/` | Payment handlers |
-| Prompt contract check | `.agents/skills/ai/prompt-contract-check/` | LLM prompt changes |
-| Frontend architecture | `.agents/skills/frontend/frontend-architecture/` | Frontend structuring |
-| Component contract check | `.agents/skills/frontend/component-contract-check/` | Shared components |
-| State management | `.agents/skills/frontend/state-management/` | Frontend state |
-| Deployment workflow | `.agents/skills/infra/deployment/` | Deployment (explicit only) |
-| IaC safety | `.agents/skills/infra/iac-safety/` | Terraform / Docker |
-| Container deployment security | `.agents/skills/infra/container-deployment-security/` | Container hardening |
+| SDLC workflow (this index in skill form) | `.agents/skills/sdlc-workflow/` | Auto |
+| Review workflow | `.agents/skills/review-workflow/` | REVIEW requests |
+| Development workflow | `.agents/skills/development-workflow/` | NEW DEVELOPMENT |
+| Fix / refactor workflow | `.agents/skills/fix-workflow/` | FIX/UPDATE/REFACTOR |
+| Debugging | `.agents/skills/debugging/` | Investigating bugs |
+| Data model design | `.agents/skills/data-model-design/` | After PRD approval |
+| Design patterns | `.agents/skills/design-patterns/` | Recurring design problems |
+| SOLID principles | `.agents/skills/solid-principles/` | Class/module design |
+| Clean architecture data flow | `.agents/skills/clean-architecture-data-flow/` | Cross-layer data |
+| Enterprise patterns | `.agents/skills/enterprise-application-patterns/` | Persistence/domain |
+| Software dev principles | `.agents/skills/software-development-principles/` | Design tradeoffs |
+| Backend architecture | `.agents/skills/backend-architecture/` | Backend structuring |
+| API contract validator | `.agents/skills/api-contract-validator/` | Adding/changing endpoints |
+| Migration safety | `.agents/skills/migration-safety/` | Schema migrations |
+| Backend security review | `.agents/skills/backend-security-review/` | Auth/payment/data changes |
+| Payment webhook safety | `.agents/skills/payment-webhook-safety/` | Payment handlers |
+| Prompt contract check | `.agents/skills/prompt-contract-check/` | LLM prompt changes |
+| Frontend architecture | `.agents/skills/frontend-architecture/` | Frontend structuring |
+| Component contract check | `.agents/skills/component-contract-check/` | Shared components |
+| State management | `.agents/skills/state-management/` | Frontend state |
+| Deployment workflow | `.agents/skills/deployment/` | Deployment (explicit only) |
+| IaC safety | `.agents/skills/iac-safety/` | Terraform / Docker |
+| Container deployment security | `.agents/skills/container-deployment-security/` | Container hardening |
 
 ---
 

@@ -21,7 +21,7 @@ A question, explanation, audit, or read-only analysis. No code will be written o
 
 **Decision rule:** If completing the request requires zero file changes → it is a REVIEW.
 
-**Workflow:** → [Review Workflow](../skills/general/review-workflow/SKILL.md)
+**Workflow:** → [Review Workflow](../skills/review-workflow/SKILL.md)
 
 ---
 
@@ -42,7 +42,7 @@ Sub-types — state which one applies:
 
 **Decision rule:** If the primary deliverable is code/functionality that does not exist → it is NEW DEVELOPMENT.
 
-**Workflow:** → [Development Workflow](../skills/general/development-workflow/SKILL.md)
+**Workflow:** → [Development Workflow](../skills/development-workflow/SKILL.md)
 
 ---
 
@@ -68,7 +68,7 @@ Sub-types — state which one applies:
 
 **Decision rule:** If the primary deliverable modifies something that already exists → it is a FIX / UPDATE / REFACTOR.
 
-**Workflow:** → [Fix / Update / Refactor Workflow](../skills/general/fix-workflow/SKILL.md)
+**Workflow:** → [Fix / Update / Refactor Workflow](../skills/fix-workflow/SKILL.md)
 
 ---
 

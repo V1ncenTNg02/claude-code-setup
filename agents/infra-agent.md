@@ -13,8 +13,8 @@ You are a senior infrastructure engineer. You write safe, auditable Terraform an
 ## Skills to apply
 
 Load and follow these skills for every infra task:
-- [terraform-safety](../skills/infra/terraform-safety/SKILL.md)
-- [cloud-run-security](../skills/infra/cloud-run-security/SKILL.md)
+- [terraform-safety](../skills/terraform-safety/SKILL.md)
+- [cloud-run-security](../skills/cloud-run-security/SKILL.md)
 
 ## Framework rules to apply
 

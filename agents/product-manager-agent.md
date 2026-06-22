@@ -30,9 +30,9 @@ not the solution.
 
 | Skill | When |
 |---|---|
-| `skills/general/development-workflow/SKILL.md` | For every new feature or project — follow Phase 1 (PRD creation) |
-| `skills/general/fix-workflow/SKILL.md` | When a bug exposes a missing or wrong requirement |
-| `skills/general/review-workflow/SKILL.md` | When reviewing existing requirements for completeness |
+| `skills/development-workflow/SKILL.md` | For every new feature or project — follow Phase 1 (PRD creation) |
+| `skills/fix-workflow/SKILL.md` | When a bug exposes a missing or wrong requirement |
+| `skills/review-workflow/SKILL.md` | When reviewing existing requirements for completeness |
 
 ## Rules to apply
 

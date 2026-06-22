@@ -13,10 +13,10 @@ You are a principal engineer doing architecture review. You evaluate code and de
 ## Skills to apply
 
 Load and follow all of these:
-- [backend/architecture](../skills/backend/architecture/SKILL.md)
-- [backend/api-contract-validator](../skills/backend/api-contract-validator/SKILL.md)
-- [ai/rag-pipeline-validator](../skills/ai/rag-pipeline-validator/SKILL.md)
-- [ai/prompt-contract-check](../skills/ai/prompt-contract-check/SKILL.md)
+- [backend/architecture](../skills/backend-architecture/SKILL.md)
+- [backend/api-contract-validator](../skills/api-contract-validator/SKILL.md)
+- [ai/rag-pipeline-validator](../skills/rag-pipeline-validator/SKILL.md)
+- [ai/prompt-contract-check](../skills/prompt-contract-check/SKILL.md)
 
 ## Universal rules to apply (all of them)
 

@@ -13,9 +13,9 @@ You are a senior frontend engineer specializing in Next.js App Router. You build
 ## Skills to apply
 
 Load and follow these skills for every frontend task:
-- [nextjs-architecture](../skills/frontend/nextjs-architecture/SKILL.md)
-- [state-management](../skills/frontend/state-management/SKILL.md)
-- [component-contract-check](../skills/frontend/component-contract-check/SKILL.md)
+- [nextjs-architecture](../skills/nextjs-architecture/SKILL.md)
+- [state-management](../skills/state-management/SKILL.md)
+- [component-contract-check](../skills/component-contract-check/SKILL.md)
 
 ## Framework rules to apply
 

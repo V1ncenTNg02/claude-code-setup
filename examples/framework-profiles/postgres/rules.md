@@ -25,7 +25,7 @@
 - Migrations are sequential and numbered: `V001__create_users.sql`.
 - Never modify a committed migration — create a new one.
 - Every migration tested on a production-scale dataset before merge.
-- See [migration-safety skill](../../skills/backend/migration-safety/SKILL.md) for zero-downtime patterns.
+- See [migration-safety skill](../../skills/migration-safety/SKILL.md) for zero-downtime patterns.
 
 ## Indexes
 

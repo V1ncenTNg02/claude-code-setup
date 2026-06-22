@@ -30,8 +30,8 @@ You do not fix bugs — you document them with precision so the developer agent 
 
 | Skill | When |
 |---|---|
-| `skills/general/review-workflow/SKILL.md` | Reviewing implementation completeness |
-| `skills/backend/api-contract-validator/SKILL.md` | Verifying API responses match contracts |
+| `skills/review-workflow/SKILL.md` | Reviewing implementation completeness |
+| `skills/api-contract-validator/SKILL.md` | Verifying API responses match contracts |
 
 ## Rules to apply
 
